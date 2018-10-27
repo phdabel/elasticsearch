@@ -15,6 +15,19 @@ var client = new elasticsearch.Client({
   log: 'trace'
 });
 
+client.create({
+  index: 'user',
+  type: 'user',
+  id: '3',
+  body: {
+    title: 'Test 1',
+    tags: ['y', 'z'],
+    published: true,
+    published_at: '2013-01-01',
+    counter: 1
+  }
+});
+
 //client.ping({
 //  // ping usually has a 3000ms timeout
 //  requestTimeout: 1000
@@ -26,33 +39,33 @@ var client = new elasticsearch.Client({
 //  }
 //});
 
-var listFiles = new Promise(function(fulfill,reject){
-    var target = process.cwd()+'/GH95/';
-    fs.readdirSync(target).forEach(function(file){
-        if(file.indexOf('.sgml') != -1){
-            let doc = target+file;
-            let data = "<ROOT>\\n"+fs.readFileSync(doc, "utf8")+"\\n</ROOT>";
-            parser.parseString(data)
-                    .then(function(res){
-                        if(res === null) reject("null exception");
-                        else {
-                            client.bulk({
-                                body:res["DOC"]
-                            },function(err, resp){
-                                if(err) reject(err);
-                                else console.log(resp);
-                            });
-                        }
-                    },function(err){
-                        reject(err);
-                    });
-        }
-    });
-    fulfill("Fim");
-});
-
-listFiles.then(function(files){
-    console.log(files);
-},function(err){
-    console.log(err);
-});
+//var listFiles = new Promise(function(fulfill,reject){
+//    var target = process.cwd()+'/GH95/';
+//    fs.readdirSync(target).forEach(function(file){
+//        if(file.indexOf('.sgml') != -1){
+//            let doc = target+file;
+//            let data = "<ROOT>\\n"+fs.readFileSync(doc, "utf8")+"\\n</ROOT>";
+//            parser.parseString(data)
+//                    .then(function(res){
+//                        if(res === null) reject("null exception");
+//                        else {
+//                            client.bulk({
+//                                body:res["DOC"]
+//                            },function(err, resp){
+//                                if(err) reject(err);
+//                                else console.log(resp);
+//                            });
+//                        }
+//                    },function(err){
+//                        reject(err);
+//                    });
+//        }
+//    });
+//    fulfill("Fim");
+//});
+//
+//listFiles.then(function(files){
+//    console.log(files);
+//},function(err){
+//    console.log(err);
+//});
