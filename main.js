@@ -3,52 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var elasticsearch = require('elasticsearch');
+
 var fs = require('fs');
+var Model = require('./model/basemodel.js');
 
 var xml2js = require('xml2js-parser');
 var parser = new xml2js.Parser({explicitRoot:false, strict:false, explicitArray: false});
 var Promise = new require('promise');
 
-var client = new elasticsearch.Client({
-  host: 'localhost:9200',
-  log: 'trace'
-});
-
-client.create({
-  index: 'user',
-  type: 'user',
-  id: '3',
-  body: {
-    title: 'Test 1',
-    tags: ['y', 'z'],
-    published: true,
-    published_at: '2013-01-01',
-    counter: 1
-  }
-});
-
-//client.ping({
-//  // ping usually has a 3000ms timeout
-//  requestTimeout: 1000
-//}, function (error) {
-//  if (error) {
-//    console.trace('elasticsearch cluster is down!');
-//  } else {
-//    console.log('All is well');
-//  }
+var client = new Model();
+//client.ping();
+//client.create('test','aaa1',{
+//    fist_name : 'abel',
+//    last_name : 'correa'
 //});
+
+//client.update('test', 'test', 'aaa1', {last_name: 'correa dias'});
+
+client.read('test','test','aaa1');
+
 
 //var listFiles = new Promise(function(fulfill,reject){
 //    var target = process.cwd()+'/GH95/';
 //    fs.readdirSync(target).forEach(function(file){
-//        if(file.indexOf('.sgml') != -1){
+//        if(file.indexOf('950102.sgml') != -1){
 //            let doc = target+file;
 //            let data = "<ROOT>\\n"+fs.readFileSync(doc, "utf8")+"\\n</ROOT>";
 //            parser.parseString(data)
 //                    .then(function(res){
 //                        if(res === null) reject("null exception");
 //                        else {
+//                            console.log(res["DOC"].length);
 //                            client.bulk({
 //                                body:res["DOC"]
 //                            },function(err, resp){
@@ -63,7 +48,6 @@ client.create({
 //    });
 //    fulfill("Fim");
 //});
-//
 //listFiles.then(function(files){
 //    console.log(files);
 //},function(err){
